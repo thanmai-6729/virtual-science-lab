@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Virtual Science Lab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --background: #ecf0f1;
+            --text: #2c3e50;
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --accent-color: #e74c3c;
+            --header-bg: linear-gradient(135deg, #3498db, #2ecc71);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--background);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text);
+        }
+
+        .register-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+            padding: 2.5rem;
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .register-header .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .register-header .logo i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-right: 15px;
+        }
+
+        .register-header h2 {
+            color: var(--dark-color);
+            font-size: 1.8rem;
+        }
+
+        .register-form input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 1.2rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .register-form input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+
+        .register-form button {
+            width: 100%;
+            padding: 12px;
+            background: var(--header-bg);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .register-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .register-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .register-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .register-container {
+                width: 95%;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-header">
+            <div class="logo">
+                <i class="fas fa-flask"></i>
+                <h2>Virtual Science Lab</h2>
+            </div>
+            <p>Create a New Account</p>
+        </div>
+        
+        <form id="registerForm" class="register-form" onsubmit="return handleRegistration(event)">
+            <input 
+                type="text" 
+                id="fullName" 
+                name="fullName" 
+                placeholder="Full Name" 
+                required
+            >
+            <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                placeholder="Email Address" 
+                required
+            >
+            <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                placeholder="Create Password" 
+                required
+                minlength="8"
+            >
+            <input 
+                type="password" 
+                id="confirmPassword" 
+                name="confirmPassword" 
+                placeholder="Confirm Password" 
+                required
+                minlength="8"
+            >
+            <button type="submit">Register</button>
+        </form>
+
+        <div class="register-footer">
+            <p>Already have an account? 
+                <a href="login.html">Login Here</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function handleRegistration(event) {
+            event.preventDefault();
+            
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Validation
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return false;
+            }
+
+            if (password.length < 8) {
+                alert('Password must be at least 8 characters long');
+                return false;
+            }
+
+            // Email validation regex
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address');
+                return false;
+            }
+
+            // Simulated registration (replace with actual backend call)
+            try {
+                // Simulated fetch to backend
+                fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        fullName, 
+                        email, 
+                        password 
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Registration Successful!');
+                        window.location.href = 'login.html';
+                    } else {
+                        alert(data.message || 'Registration failed');
+                    }
+                })
+                .catch(error => {
+                    console.error('Registration error:', error);
+                    alert('An error occurred during registration');
+                });
+            } catch (error) {
+                console.error('Registration error:', error);
+                alert('Registration failed');
+            }
+
+            return false;
+        }
+    </script>
+</body>
+</html>

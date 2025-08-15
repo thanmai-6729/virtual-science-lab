@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathematics - Virtual Science Lab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --background: #ecf0f1;
+            --text: #2c3e50;
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --accent-color: #e74c3c;
+            --header-bg: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --card-bg: white;
+            --input-bg: white;
+            --input-text: #2c3e50;
+
+            --dm-background: #000;
+            --dm-text: #fff;
+            --dm-header: #111;
+            --dm-card: #1a1a1a;
+            --dm-input: #333;
+            --dm-input-text: #ddd;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        header {
+            background: var(--header-bg);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header.dark-mode {
+            background: var(--dm-header);
+            color: var(--dm-text);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 2.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--dark-color);
+        }
+
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #555;
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .topic-card {
+            background-color: var(--card-bg);
+            color: var(--text);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .topic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--primary-color);
+        }
+
+        .topic-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .topic-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .topic-card p {
+            margin-bottom: 1rem;
+        }
+
+        .topic-card a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .topic-card a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .topics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        body.dark-mode {
+            background-color: var(--dm-background);
+            color: var(--dm-text);
+        }
+
+        .dark-mode .topic-card {
+            background-color: var(--dm-card);
+            color: var(--dm-text);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fas fa-flask logo-icon"></i>
+                <span>Virtual Science Lab</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="school-projects.html">Projects</a>
+                <a href="scientific-laws.html">Laws</a>
+                <a href="scientific-theories.html">Theories</a>
+                <a href="space-exploration.html">Space Missions</a>
+                <a href="ai-assistant.html">AI Assistant</a>
+                <a href="submit-queries.html">Submit Queries</a>
+                <a href="#" id="darkModeToggle">Dark Mode</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Mathematics</h1>
+            <p>Explore the study of numbers, shapes, and patterns, including algebra, geometry, and calculus.</p>
+        </section>
+
+        <section class="topics-grid">
+            <div class="topic-card">
+                <i class="fas fa-plus"></i>
+                <h3>Algebra</h3>
+                <p>Study equations, variables, and mathematical structures.</p>
+                <a href="#">Learn More</a>
+            </div>
+
+            <div class="topic-card">
+                <i class="fas fa-shapes"></i>
+                <h3>Geometry</h3>
+                <p>Explore shapes, sizes, and properties of space.</p>
+                <a href="#">Learn More</a>
+            </div>
+
+            <div class="topic-card">
+                <i class="fas fa-calculator"></i>
+                <h3>Calculus</h3>
+                <p>Investigate change and motion through derivatives and integrals.</p>
+                <a href="#">Learn More</a>
+            </div>
+
+            <div class="topic-card">
+                <i class="fas fa-chart-bar"></i>
+                <h3>Statistics</h3>
+                <p>Analyze data, probability, and trends.</p>
+                <a href="#">Learn More</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="logo" style="justify-content: center; margin-bottom: 1rem;">
+            <i class="fas fa-flask logo-icon"></i>
+            <span>Virtual Science Lab</span>
+        </div>
+
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+
+        <p>© 2025 Virtual Science Lab. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            darkModeToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.body.classList.toggle('dark-mode');
+                localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+            });
+
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+            }
+
+            document.querySelectorAll('.topic-card a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    alert(`Detailed information for "${this.parentElement.querySelector('h3').textContent}" would open here!`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

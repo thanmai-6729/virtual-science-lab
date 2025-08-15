@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Science Lab - AI Learning Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f4f6f8;
+        }
+        .chat-container {
+            max-height: 70vh;
+            overflow-y-auto;
+        }
+        .message {
+            transition: all 0.3s ease;
+        }
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg">
+            <div class="p-6">
+                <div class="flex items-center mb-6">
+                    <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center text-white mr-4">
+                        <i class="fas fa-robot text-3xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Virtual Science Lab AI Assistant</h2>
+                        <p class="text-gray-500">Your Intelligent Learning Companion</p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2">Select Learning Domain</label>
+                    <select id="domainSelector" class="w-full p-2 border rounded-md">
+                        <option value="">Choose a Scientific Domain</option>
+                        <option value="physics">Physics</option>
+                        <option value="chemistry">Chemistry</option>
+                        <option value="biology">Biology</option>
+                        <option value="astronomy">Astronomy</option>
+                        <option value="mathematics">Mathematics</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2">Describe Your Learning Challenge</label>
+                    <textarea 
+                        id="topicInput" 
+                        class="w-full p-2 border rounded-md" 
+                        rows="3" 
+                        placeholder="Describe the topic you're finding difficult to understand..."
+                    ></textarea>
+                </div>
+
+                <div class="chat-container mb-4 bg-gray-50 p-4 rounded-md" id="chatContainer">
+                    <!-- AI Responses will be dynamically added here -->
+                    <div class="text-center text-gray-500">
+                        Your personalized learning journey starts here!
+                    </div>
+                </div>
+
+                <div class="flex space-x-2">
+                    <button 
+                        id="explainButton" 
+                        class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+                    >
+                        Get Explanation
+                    </button>
+                    <button 
+                        id="simplifyButton" 
+                        class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
+                    >
+                        Simplify Concept
+                    </button>
+                </div>
+
+                <div id="typingIndicator" class="hidden mt-4 text-center text-gray-500">
+                    AI is generating a personalized explanation...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { VirtualScienceLearningAI } from './ai-learning-assistant.js';
+
+        class AILearningAssistant {
+            constructor() {
+                this.ai = new VirtualScienceLearningAI();
+                this.domainSelector = document.getElementById('domainSelector');
+                this.topicInput = document.getElementById('topicInput');
+                this.chatContainer = document.getElementById('chatContainer');
+                this.explainButton = document.getElementById('explainButton');
+                this.simplifyButton = document.getElementById('simplifyButton');
+                this.typingIndicator = document.getElementById('typingIndicator');
+
+                this.initEventListeners();
+            }
+
+            initEventListeners() {
+                this.explainButton.addEventListener('click', () => this.generateExplanation());
+                this.simplifyButton.addEventListener('click', () => this.simplifyTopic());
+            }
+
+            async generateExplanation() {
+                const domain = this.domainSelector.value;
+                const topic = this.topicInput.value.trim();
+
+                if (!domain || !topic) {
+                    alert('Please select a domain and describe your topic');
+                    return;
+                }
+
+                this.showTypingIndicator();
+
+                try {
+                    const explanation = await this.ai.generateDetailedExplanation(domain, topic);
+                    this.addResponseToChat(explanation, 'explanation');
+                } catch (error) {
+                    this.addResponseToChat('Sorry, I encountered an error generating the explanation.', 'error');
+                } finally {
+                    this.hideTypingIndicator();
+                }
+            }
+
+            async simplifyTopic() {
+                const domain = this.domainSelector.value;
+                const topic = this.topicInput.value.trim();
+
+                if (!domain || !topic) {
+                    alert('Please select a domain and describe your topic');
+                    return;
+                }
+
+                this.showTypingIndicator();
+
+                try {
+                    const simplifiedExplanation = await this.ai.simplifyComplexConcept(domain, topic);
+                    this.addResponseToChat(simplifiedExplanation, 'simplified');
+                } catch (error) {
+                    this.addResponseToChat('Sorry, I encountered an error simplifying the concept.', 'error');
+                } finally {
+                    this.hideTypingIndicator();
+                }
+            }
+
+            addResponseToChat(message, type) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add(
+                    'message', 
+                    'p-3', 
+                    'rounded-lg', 
+                    'mb-2',
+                    type === 'explanation' ? 'bg-blue-100' : 
+                    type === 'simplified' ? 'bg-green-100' : 
+                    'bg-red-100'
+                );
+                messageElement.innerHTML = `
+                    <div class="flex items-center mb-2">
+                        <span class="mr-2">
+                            ${type === 'explanation' ? '🧠' : type === 'simplified' ? '💡' : '❌'}
+                        </span>
+                        <strong>${
+                            type === 'explanation' ? 'Detailed Explanation' : 
+                            type === 'simplified' ? 'Simplified Concept' : 
+                            'Error'
+                        }</strong>
+                    </div>
+                    ${message}
+                `;
+                this.chatContainer.appendChild(messageElement);
+                this.scrollToBottom();
+            }
+
+            showTypingIndicator() {
+                this.typingIndicator.classList.remove('hidden');
+            }
+
+            hideTypingIndicator() {
+                this.typingIndicator.classList.add('hidden');
+            }
+
+            scrollToBottom() {
+                this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
+            }
+        }
+
+        // Initialize AI Learning Assistant
+        new AILearningAssistant();
+    </script>
+</body>
+</html>

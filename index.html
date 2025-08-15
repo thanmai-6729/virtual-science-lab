@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Science Lab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --background: #ecf0f1;
+            --text: #2c3e50;
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --accent-color: #e74c3c;
+            --header-bg: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --card-bg: white;
+            --input-bg: white;
+            --input-text: #2c3e50;
+
+            --dm-background: #000;
+            --dm-text: #fff;
+            --dm-header: #111;
+            --dm-card: #1a1a1a;
+            --dm-input: #333;
+            --dm-input-text: #ddd;
+        }
+
+        * {
+            margin: 0;
+            padding: 0; 
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        header {
+            background: var(--header-bg);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header.dark-mode {
+            background: var(--dm-header);
+            color: var(--dm-text);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 2.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--dark-color);
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            margin: 2rem auto;
+            max-width: 600px;
+        }
+
+        .search-container input {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 0.5rem;
+            flex-grow: 1;
+            outline: none;
+        }
+
+        .search-container button {
+            background: var(--dark-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #555;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background-color: var(--card-bg);
+            color: var(--text);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .categories {
+            margin-bottom: 3rem;
+        }
+
+        .categories h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .category-card {
+            background-color: var(--card-bg);
+            color: var(--text);
+            border-radius: 10px;
+            text-align: center;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--primary-color);
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .category-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .category-card h3 {
+            font-size: 1.2rem;
+        }
+
+        .chatbot-container {
+            background-color: var(--card-bg);
+            color: var(--text);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 3rem;
+        }
+
+        .chatbot-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .chatbot-header i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-right: 1rem;
+        }
+
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .message {
+            padding: 0.8rem 1rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background-color: var(--primary-color);
+            color: white;
+            margin-left: auto;
+        }
+
+        .bot-message {
+            background-color: #e0e0e0;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+            background-color: var(--input-bg);
+            color: var(--input-text);
+        }
+
+        .chat-input button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .query-box {
+            background-color: var(--card-bg);
+            color: var(--text);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .query-form textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            min-height: 150px;
+            resize: vertical;
+            background-color: var(--input-bg);
+            color: var(--input-text);
+        }
+
+        .query-form button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .features,
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        body.dark-mode {
+            background-color: var(--dm-background);
+            color: var(--dm-text);
+        }
+
+        .dark-mode .feature-card,
+        .dark-mode .category-card,
+        .dark-mode .chatbot-container,
+        .dark-mode .query-box {
+            background-color: var(--dm-card);
+            color: var(--dm-text);
+        }
+
+        .dark-mode .chat-messages {
+            background-color: #222;
+            color: var(--dm-text);
+        }
+
+        .dark-mode .bot-message {
+            background-color: #444;
+            color: var(--dm-text);
+        }
+
+        .dark-mode .chat-input input,
+        .dark-mode .query-form textarea {
+            background-color: var(--dm-input);
+            color: var(--dm-input-text);
+            border-color: #555;
+        }
+
+        .dark-mode .search-container input::placeholder {
+            color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fas fa-flask logo-icon"></i>
+                <span>Virtual Science Lab</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="school-projects.html">Projects</a>
+                <a href="scientific-laws.html">Laws</a>
+                <a href="scientific-theories.html">Theories</a>
+                <a href="space-exploration.html">Space Missions</a>
+                <a href="ai-assistant.html">AI Assistant</a>
+                <a href="submit-queries.html">Submit Queries</a>
+                <a href="#" id="darkModeToggle">Dark Mode</a>
+            </div>
+        </nav>
+
+        <div class="search-container">
+            <i class="fas fa-search" style="color: white; margin-right: 10px;"></i>
+            <input type="text" id="searchInput" placeholder="Search for projects, laws, theories...">
+            <button onclick="performSearch()">Search</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Explore Science Like Never Before</h1>
+            <p>Welcome to the Virtual Science Lab, your one-stop platform for educational projects, scientific laws, theories, and interactive 3D experiments. Designed for students, educators, and science enthusiasts.</p>
+        </section>
+
+        <section class="features">
+            <div class="feature-card" id="schoolProjectsCard">
+                <i class="fas fa-microscope"></i>
+                <h3>School Projects</h3>
+                <p>Access a comprehensive collection of school projects for all grade levels. Each project comes with detailed explanations and interactive 3D models for better understanding.</p>
+            </div>
+
+            <div class="feature-card" id="scientificLawsCard">
+                <i class="fas fa-balance-scale"></i>
+                <h3>Scientific Laws</h3>
+                <p>Explore the fundamental laws of science with extensive explanations and visualizations. Dive deep into physics, chemistry, biology, and more.</p>
+            </div>
+
+            <div class="feature-card" id="aiAssistantCard">
+                <i class="fas fa-robot"></i>
+                <h3>AI Assistant</h3>
+                <p>Our intelligent chatbot is here to answer your scientific queries, guide you through experiments, and help with your homework.</p>
+            </div>
+
+            <div class="feature-card" id="scientificTheoriesCard">
+                <i class="fas fa-lightbulb"></i>
+                <h3>Scientific Theories</h3>
+                <p>Learn about groundbreaking theories that have shaped our understanding of the universe, from evolution to quantum mechanics.</p>
+            </div>
+
+            <div class="feature-card" id="submitQueriesCard">
+                <i class="fas fa-question-circle"></i>
+                <h3>Submit Queries</h3>
+                <p>Have an interesting scientific question? Submit it to our platform and it might become the next research focus for scientists around the world.</p>
+            </div>
+
+            <div class="feature-card" id="spaceExplorationCard">
+                <i class="fas fa-rocket"></i>
+                <h3>Space Exploration</h3>
+                <p>Discover past and ongoing space missions from NASA and other agencies, complete with timelines, objectives, and achievements.</p>
+            </div>
+        </section>
+
+        <section class="categories">
+            <h2>Explore by Subject</h2>
+            <div class="category-grid">
+                <div class="category-card" onclick="window.location.href='physics.html'">
+                    <i class="fas fa-atom"></i>
+                    <h3>Physics</h3>
+                </div>
+
+                <div class="category-card" onclick="window.location.href='chemistry.html'">
+                    <i class="fas fa-vial"></i>
+                    <h3>Chemistry</h3>
+                </div>
+
+                <div class="category-card" onclick="window.location.href='biology.html'">
+                    <i class="fas fa-dna"></i>
+                    <h3>Biology</h3>
+                </div>
+
+                <div class="category-card" onclick="window.location.href='earth-science.html'">
+                    <i class="fas fa-globe-americas"></i>
+                    <h3>Earth Science</h3>
+                </div>
+
+                <div class="category-card" onclick="window.location.href='astronomy.html'">
+                    <i class="fas fa-star"></i>
+                    <h3>Astronomy</h3>
+                </div>
+
+                <div class="category-card" onclick="window.location.href='psychology.html'">
+                    <i class="fas fa-brain"></i>
+                    <h3>Psychology</h3>
+                </div>
+
+                <div class="category-card" onclick="window.location.href='mathematics.html'">
+                    <i class="fas fa-calculator"></i>
+                    <h3>Mathematics</h3>
+                </div>
+
+                <div class="category-card" onclick="window.location.href='engineering.html'">
+                    <i class="fas fa-cogs"></i>
+                    <h3>Engineering</h3>
+                </div>
+            </div>
+        </section>
+
+        <section class="chatbot-container">
+            <div class="chatbot-header">
+                <i class="fas fa-robot"></i>
+                <h2>Virtual Science Lab AI Assistant</h2>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; font-weight: bold; margin-bottom: 0.5rem;">Select Learning Domain</label>
+                <select id="domainSelector" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 5px; background-color: var(--input-bg); color: var(--input-text);">
+                    <option value="">Choose a Scientific Domain</option>
+                    <option value="physics">Physics</option>
+                    <option value="chemistry">Chemistry</option>
+                    <option value="biology">Biology</option>
+                    <option value="astronomy">Astronomy</option>
+                    <option value="mathematics">Mathematics</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; font-weight: bold; margin-bottom: 0.5rem;">Describe Your Learning Challenge</label>
+                <textarea id="topicInput" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 5px; background-color: var(--input-bg); color: var(--input-text); min-height: 100px; resize: vertical;" placeholder="Describe the topic you're finding difficult to understand..."></textarea>
+            </div>
+
+            <div class="chat-messages" id="chatContainer">
+                <div class="message bot-message">
+                    Hello! I'm your Virtual Science Lab AI Assistant. Select a domain and describe your topic to get started!
+                </div>
+            </div>
+
+            <div class="chat-input" style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button id="explainButton" style="background-color: var(--primary-color); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 5px; cursor: pointer;">
+                    <i class="fas fa-book"></i> Get Explanation
+                </button>
+                <button id="simplifyButton" style="background-color: var(--secondary-color); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 5px; cursor: pointer;">
+                    <i class="fas fa-lightbulb"></i> Simplify Concept
+                </button>
+            </div>
+
+            <div id="typingIndicator" style="display: none; margin-top: 1rem; text-align: center; color: #555;">
+                AI is generating a response...
+            </div>
+        </section>
+
+        <section class="query-box">
+            <h2>Submit Your Scientific Question</h2>
+            <p>Have a question that you can't find an answer to? Submit it below and our team of scientists might pick it up for research!</p>
+
+            <form class="query-form" id="queryForm">
+                <textarea id="queryText" placeholder="Type your scientific query here..."></textarea>
+                <button type="button" onclick="submitQuery()"><i class="fas fa-send"></i> Submit Query</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <div class="logo" style="justify-content: center; margin-bottom: 1rem;">
+            <i class="fas fa-flask logo-icon"></i>
+            <span>Virtual Science Lab</span>
+        </div>
+
+        <div class="footer-links">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+
+        <p>© 2025 Virtual Science Lab. All rights reserved.</p>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        if (darkModeToggle) {
+            darkModeToggle.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.body.classList.toggle('dark-mode');
+                localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+            });
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+            }
+        }
+
+        // Navigation Handling
+        document.querySelectorAll('.nav-links a:not(#darkModeToggle)').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const pageMapping = {
+                    'Projects': 'school-projects.html',
+                    'Laws': 'scientific-laws.html',
+                    'Theories': 'scientific-theories.html',
+                    'Space Missions': 'space-exploration.html',
+                    'AI Assistant': 'ai-assistant.html',
+                    'Submit Queries': 'submit-queries.html',
+                    'Home': 'index.html'
+                };
+                const targetPage = pageMapping[this.textContent.trim()];
+                if (targetPage) window.location.href = targetPage;
+            });
+        });
+
+        // Feature Card Clicks
+        const cardMappings = {
+            schoolProjectsCard: 'school-projects.html',
+            scientificLawsCard: 'scientific-laws.html',
+            aiAssistantCard: 'ai-assistant.html',
+            scientificTheoriesCard: 'scientific-theories.html',
+            submitQueriesCard: 'submit-queries.html',
+            spaceExplorationCard: 'space-exploration.html'
+        };
+        Object.keys(cardMappings).forEach(cardId => {
+            const card = document.getElementById(cardId);
+            if (card) {
+                card.addEventListener('click', function () {
+                    window.location.href = cardMappings[cardId];
+                });
+            }
+        });
+
+        // VirtualScienceLearningAI Class
+        class VirtualScienceLearningAI {
+            constructor() {
+                this.domains = {
+                    physics: ['mechanics', 'thermodynamics', 'electromagnetism', 'quantum physics', 'relativity'],
+                    chemistry: ['organic chemistry', 'inorganic chemistry', 'physical chemistry', 'biochemistry'],
+                    biology: ['cell biology', 'genetics', 'ecology', 'physiology', 'evolution'],
+                    astronomy: ['planets', 'stars', 'galaxies', 'cosmology', 'astrophysics'],
+                    mathematics: ['algebra', 'calculus', 'geometry', 'statistics', 'number theory']
+                };
+            }
+
+            async generateDetailedExplanation(domain, topic) {
+                await this.simulateDelay();
+                return this.generateExplanation('detailed', domain, topic);
+            }
+
+            async simplifyComplexConcept(domain, topic) {
+                await this.simulateDelay();
+                return this.generateExplanation('simplified', domain, topic);
+            }
+
+            async simulateDelay() {
+                return new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
+            }
+
+            generateExplanation(type, domain, topic) {
+                const explanations = {
+                    physics: {
+                        detailed: `<p><strong>${topic} in Physics:</strong></p>
+                            <p>This concept is fundamental to understanding how objects interact with energy and forces. In physics, ${topic} involves mathematical models that describe the relationships between various physical quantities.</p>
+                            <p>The mathematical formula that governs this is often represented as:</p>
+                            <p style="text-align: center; background-color: #e0e0e0; padding: 0.5rem; border-radius: 5px;">F = ma (Force equals mass times acceleration)</p>
+                            <p>This principle was first described by Sir Isaac Newton in his laws of motion and continues to be a cornerstone of classical mechanics.</p>`,
+                        simplified: `<p><strong>${topic} Made Simple:</strong></p>
+                            <p>Think of ${topic} like this: when you push something, it moves. The heavier it is, the harder you need to push!</p>
+                            <p>It's like trying to push a shopping cart - an empty one moves easily, but one full of groceries needs more force.</p>`
+                    },
+                    chemistry: {
+                        detailed: `<p><strong>${topic} in Chemistry:</strong></p>
+                            <p>This chemical process involves the rearrangement of atoms and the breaking and forming of chemical bonds. During ${topic}, electrons are transferred between molecules, creating new substances with different properties.</p>
+                            <p>The general reaction can be written as:</p>
+                            <p style="text-align: center; background-color: #e0e0e0; padding: 0.5rem; border-radius: 5px;">A + B → AB (Reactants form products)</p>
+                            <p>The energy changes in this reaction can be calculated using enthalpy and entropy considerations.</p>`,
+                        simplified: `<p><strong>${topic} Made Simple:</strong></p>
+                            <p>${topic} is like a dance where atoms switch partners to form new teams.</p>
+                            <p>Imagine building with LEGO - you take apart one structure and use the pieces to build something completely new!</p>`
+                    },
+                    biology: {
+                        detailed: `<p><strong>${topic} in Biology:</strong></p>
+                            <p>This biological process is essential for maintaining homeostasis within living organisms. ${topic} typically involves multiple cell types working in coordination through various signaling pathways.</p>
+                            <p>At the molecular level, proteins and enzymes facilitate these reactions, often requiring ATP as an energy source.</p>
+                            <p>The process has been extensively studied using model organisms such as Drosophila melanogaster and Caenorhabditis elegans.</p>`,
+                        simplified: `<p><strong>${topic} Made Simple:</strong></p>
+                            <p>${topic} is how your body keeps everything running smoothly, like a well-organized factory.</p>
+                            <p>Imagine your cells as tiny workers, each with a specific job that helps keep you healthy and functioning!</p>`
+                    },
+                    astronomy: {
+                        detailed: `<p><strong>${topic} in Astronomy:</strong></p>
+                            <p>This astronomical phenomenon results from the interaction of gravitational forces across vast cosmic distances. ${topic} involves celestial bodies that formed approximately 13.8 billion years ago following the Big Bang.</p>
+                            <p>Astronomers study this using various tools including radio telescopes, spectroscopy, and the Hubble Space Telescope.</p>
+                            <p>Recent research from missions like JWST has provided new insights into the underlying mechanisms.</p>`,
+                        simplified: `<p><strong>${topic} Made Simple:</strong></p>
+                            <p>${topic} is about giant objects in space and how they move around each other because of gravity.</p>
+                            <p>It's like a cosmic dance where planets circle stars, and stars group together into galaxies!</p>`
+                    },
+                    mathematics: {
+                        detailed: `<p><strong>${topic} in Mathematics:</strong></p>
+                            <p>This mathematical concept provides a framework for analyzing quantitative relationships between variables. ${topic} uses algebraic notation to express these relationships in the form of equations or inequalities.</p>
+                            <p>The fundamental theorem associated with this concept can be expressed as:</p>
+                            <p style="text-align: center; background-color: #e0e0e0; padding: 0.5rem; border-radius: 5px;">∫<sub>a</sub><sup>b</sup> f(x) dx = F(b) - F(a)</p>
+                            <p>Applications of this principle can be found in fields ranging from economics to engineering.</p>`,
+                        simplified: `<p><strong>${topic} Made Simple:</strong></p>
+                            <p>${topic} is like following a recipe where you have to do things in a certain order to get the right answer.</p>
+                            <p>Think of it as finding patterns and using them to solve puzzles or predict what comes next in a sequence!</p>`
+                    }
+                };
+
+                if (!explanations[domain]) {
+                    return `<p>I don't have specific information about ${topic} in ${domain} yet. 
+                        As you continue to use this AI assistant, it will be updated with more domains and topics.</p>`;
+                }
+
+                return explanations[domain][type] || 
+                    `<p>I'm still learning about ${topic} in ${domain}. Please try a different topic or check back later.</p>`;
+            }
+        }
+
+        // AI Assistant Functionality
+        const ai = new VirtualScienceLearningAI();
+        const domainSelector = document.getElementById('domainSelector');
+        const topicInput = document.getElementById('topicInput');
+        const chatContainer = document.getElementById('chatContainer');
+        const explainButton = document.getElementById('explainButton');
+        const simplifyButton = document.getElementById('simplifyButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        function showTypingIndicator() {
+            typingIndicator.style.display = 'block';
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            typingIndicator.style.display = 'none';
+        }
+
+        function addResponseToChat(message, type) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            if (type === 'explanation') {
+                messageElement.classList.add('user-message'); // Blue background
+            } else if (type === 'simplified') {
+                messageElement.style.backgroundColor = '#d1fae5'; // Light green
+                messageElement.style.color = '#2c3e50';
+            } else {
+                messageElement.classList.add('bot-message'); // Default gray
+            }
+            messageElement.innerHTML = message;
+            chatContainer.appendChild(messageElement);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        async function handleAIRequest(type) {
+            const domain = domainSelector.value;
+            const topic = topicInput.value.trim();
+
+            if (!domain || !topic) {
+                addResponseToChat('Please select a domain and describe your topic.', 'error');
+                return;
+            }
+
+            showTypingIndicator();
+
+            try {
+                let response;
+                if (type === 'explanation') {
+                    response = await ai.generateDetailedExplanation(domain, topic);
+                } else {
+                    response = await ai.simplifyComplexConcept(domain, topic);
+                }
+                hideTypingIndicator();
+                addResponseToChat(response, type);
+            } catch (error) {
+                hideTypingIndicator();
+                addResponseToChat('Error: Unable to generate response. Please try again.', 'error');
+            }
+        }
+
+        explainButton.addEventListener('click', () => handleAIRequest('explanation'));
+        simplifyButton.addEventListener('click', () => handleAIRequest('simplified'));
+
+        // Query Submission
+        const queryText = document.getElementById('queryText');
+        window.submitQuery = function () {
+            const query = queryText.value.trim();
+            if (!query) return;
+
+            chatContainer.innerHTML = '';
+            const submitMsg = document.createElement('div');
+            submitMsg.classList.add('message', 'bot-message');
+            submitMsg.textContent = `Query submitted: "${query}"`;
+            chatContainer.appendChild(submitMsg);
+
+            setTimeout(() => {
+                const confirmMsg = document.createElement('div');
+                confirmMsg.classList.add('message', 'bot-message');
+                confirmMsg.textContent = "Thank you! Your question has been recorded. Our team will review it.";
+                chatContainer.appendChild(confirmMsg);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 1000);
+
+            queryText.value = '';
+        };
+
+        if (queryText) {
+            queryText.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter' && e.ctrlKey) {
+                    submitQuery();
+                }
+            });
+        }
+    });
+    </script>
+</body>
+</html>
