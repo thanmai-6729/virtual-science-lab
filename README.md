@@ -245,8 +245,8 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ## 👥 Authors & Contributors
 
 **Project Maintainers:**
-- [Your Name](https://github.com/yourusername) - Initial development
-- [Contributor Name](https://github.com/contributor) - Feature contributions
+- [Gundekari Thanmai](https://github.com/thanmai-6729) - Initial development
+
 
 **Special Thanks:**
 - The open-source community for inspiration and tools
